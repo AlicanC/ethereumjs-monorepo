@@ -1,6 +1,9 @@
 {
   "name": "root",
   "private": true,
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "devDependencies": {
     "husky": "^4.2.5",
     "lerna": "^3.20.2",
