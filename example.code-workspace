@@ -1,0 +1,34 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "./packages/client"
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true
+  },
+  "extensions": {
+    "recommendations": ["dbaeumer.vscode-eslint"]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "type": "npm",
+        "script": "bootstrap",
+        "problemMatcher": [],
+        "label": "npm: bootstrap"
+      },
+      {
+        "type": "npm",
+        "script": "build",
+        "group": "build",
+        "problemMatcher": [],
+        "label": "npm: build"
+      }
+    ]
+  }
+}
