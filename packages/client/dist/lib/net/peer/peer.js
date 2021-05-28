@@ -31,7 +31,6 @@ class Peer extends events.EventEmitter {
      * @param {PeerOptions}
      */
     constructor(options) {
-        var _a, _b, _c;
         super();
         /*
           If the peer is in the PeerPool.
@@ -41,11 +40,11 @@ class Peer extends events.EventEmitter {
         */
         this.pooled = false;
         this.config = options.config;
-        this.id = (_a = options.id) !== null && _a !== void 0 ? _a : '';
+        this.id = options.id ?? '';
         this.address = options.address;
         this.transport = options.transport;
-        this.inbound = (_b = options.inbound) !== null && _b !== void 0 ? _b : false;
-        this.protocols = (_c = options.protocols) !== null && _c !== void 0 ? _c : [];
+        this.inbound = options.inbound ?? false;
+        this.protocols = options.protocols ?? [];
         this.bound = new Map();
         this._idle = true;
     }

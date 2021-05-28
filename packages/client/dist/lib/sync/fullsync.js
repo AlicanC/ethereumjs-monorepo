@@ -53,13 +53,12 @@ class FullSynchronizer extends sync_1.Synchronizer {
      * blockchain. Returns null if no valid peer is found
      */
     best() {
-        var _a;
         let best;
         const peers = this.pool.peers.filter(this.syncable.bind(this));
         if (peers.length < this.config.minPeers && !this.forceSync)
             return;
         for (const peer of peers) {
-            if ((_a = peer.eth) === null || _a === void 0 ? void 0 : _a.status) {
+            if (peer.eth?.status) {
                 const td = peer.eth.status.td;
                 if ((!best && td.gte(this.chain.blocks.td)) ||
                     (best && best.eth && best.eth.status.td.lt(td))) {
@@ -74,12 +73,11 @@ class FullSynchronizer extends sync_1.Synchronizer {
      * @return {Promise} Resolves with header
      */
     async latest(peer) {
-        var _a;
-        const headers = await ((_a = peer.eth) === null || _a === void 0 ? void 0 : _a.getBlockHeaders({
+        const headers = await peer.eth?.getBlockHeaders({
             block: peer.eth.status.bestHash,
             max: 1,
-        }));
-        return headers === null || headers === void 0 ? void 0 : headers[0];
+        });
+        return headers?.[0];
     }
     /**
      * Sync all blocks and state from peer starting from current height.

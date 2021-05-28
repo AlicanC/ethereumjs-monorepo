@@ -161,13 +161,10 @@ async function parseGethParams(json) {
         spuriousDragon: 'eip155Block',
         byzantium: 'byzantiumBlock',
     };
-    params.hardforks = hardforks.map((name) => {
-        var _a;
-        return ({
-            name: name,
-            block: name === 'chainstart' ? 0 : (_a = config[forkMap[name]]) !== null && _a !== void 0 ? _a : null,
-        });
-    });
+    params.hardforks = hardforks.map((name) => ({
+        name: name,
+        block: name === 'chainstart' ? 0 : config[forkMap[name]] ?? null,
+    }));
     return params;
 }
 async function parseParams(json, name) {

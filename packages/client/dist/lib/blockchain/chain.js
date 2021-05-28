@@ -18,7 +18,6 @@ class Chain extends events_1.EventEmitter {
      * @param {ChainOptions} options
      */
     constructor(options) {
-        var _a;
         super();
         this._headers = {
             latest: null,
@@ -35,13 +34,15 @@ class Chain extends events_1.EventEmitter {
         if (this.config.chainCommon.consensusAlgorithm() === 'clique') {
             validateConsensus = true;
         }
-        this.blockchain = (_a = options.blockchain) !== null && _a !== void 0 ? _a : new blockchain_1.default({
-            db: options.chainDB,
-            common: this.config.chainCommon,
-            hardforkByHeadBlockNumber: true,
-            validateBlocks: true,
-            validateConsensus,
-        });
+        this.blockchain =
+            options.blockchain ??
+                new blockchain_1.default({
+                    db: options.chainDB,
+                    common: this.config.chainCommon,
+                    hardforkByHeadBlockNumber: true,
+                    validateBlocks: true,
+                    validateConsensus,
+                });
         this.chainDB = this.blockchain.db;
         this.opened = false;
     }
@@ -81,14 +82,14 @@ class Chain extends events_1.EventEmitter {
      * @return {ChainHeaders}
      */
     get headers() {
-        return Object.assign({}, this._headers);
+        return { ...this._headers };
     }
     /**
      * Returns properties of the canonical blockchain.
      * @return {ChainBlocks}
      */
     get blocks() {
-        return Object.assign({}, this._blocks);
+        return { ...this._blocks };
     }
     /**
      * Open blockchain and wait for database to load

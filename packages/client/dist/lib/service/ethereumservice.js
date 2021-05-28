@@ -14,12 +14,11 @@ class EthereumService extends service_1.Service {
      * @param {EthereumServiceOptions}
      */
     constructor(options) {
-        var _a, _b, _c;
         super(options);
         this.flow = new flowcontrol_1.FlowControl();
-        this.chain = (_a = options.chain) !== null && _a !== void 0 ? _a : new blockchain_1.Chain(options);
-        this.interval = (_b = options.interval) !== null && _b !== void 0 ? _b : 8000;
-        this.timeout = (_c = options.timeout) !== null && _c !== void 0 ? _c : 6000;
+        this.chain = options.chain ?? new blockchain_1.Chain(options);
+        this.interval = options.interval ?? 8000;
+        this.timeout = options.timeout ?? 6000;
     }
     /**
      * Service name

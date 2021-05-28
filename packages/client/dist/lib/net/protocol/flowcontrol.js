@@ -7,12 +7,11 @@ exports.FlowControl = void 0;
  */
 class FlowControl {
     constructor(options) {
-        var _a, _b, _c;
-        this.bl = (_a = options === null || options === void 0 ? void 0 : options.bl) !== null && _a !== void 0 ? _a : 300000000;
-        this.mrc = (_b = options === null || options === void 0 ? void 0 : options.mrc) !== null && _b !== void 0 ? _b : {
+        this.bl = options?.bl ?? 300000000;
+        this.mrc = options?.mrc ?? {
             GetBlockHeaders: { base: 1000, req: 1000 },
         };
-        this.mrr = (_c = options === null || options === void 0 ? void 0 : options.mrr) !== null && _c !== void 0 ? _c : 10000;
+        this.mrr = options?.mrr ?? 10000;
         this.out = new Map();
         this.in = new Map();
     }
@@ -22,8 +21,7 @@ class FlowControl {
      * @param  {number} bv latest buffer value
      */
     handleReply(peer, bv) {
-        var _a;
-        const params = (_a = this.in.get(peer.id)) !== null && _a !== void 0 ? _a : {};
+        const params = this.in.get(peer.id) ?? {};
         params.ble = bv;
         params.last = Date.now();
         this.in.set(peer.id, params);
@@ -35,13 +33,12 @@ class FlowControl {
      * @return maximum count
      */
     maxRequestCount(peer, messageName) {
-        var _a;
         const now = Date.now();
         const mrcBase = peer.les.status.mrc[messageName].base;
         const mrcReq = peer.les.status.mrc[messageName].req;
         const mrr = peer.les.status.mrr;
         const bl = peer.les.status.bl;
-        const params = (_a = this.in.get(peer.id)) !== null && _a !== void 0 ? _a : { ble: bl };
+        const params = this.in.get(peer.id) ?? { ble: bl };
         if (params.last) {
             // recharge BLE at rate of MRR when less than BL
             // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
@@ -62,9 +59,8 @@ class FlowControl {
      * @return new buffer value after request is sent (if negative, drop peer)
      */
     handleRequest(peer, messageName, count) {
-        var _a;
         const now = Date.now();
-        const params = (_a = this.out.get(peer.id)) !== null && _a !== void 0 ? _a : {};
+        const params = this.out.get(peer.id) ?? {};
         if (params.bv && params.last) {
             // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
             params.bv = Math.min(params.bv + this.mrr * (now - params.last), this.bl);

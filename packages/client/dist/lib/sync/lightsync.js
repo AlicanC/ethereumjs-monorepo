@@ -26,8 +26,7 @@ class LightSynchronizer extends sync_1.Synchronizer {
      * @return {boolean}
      */
     syncable(peer) {
-        var _a;
-        return (_a = peer.les) === null || _a === void 0 ? void 0 : _a.status.serveHeaders;
+        return peer.les?.status.serveHeaders;
     }
     /**
      * Finds the best peer to sync with. We will synchronize to this peer's

@@ -8,10 +8,9 @@ class BlockFetcherBase extends fetcher_1.Fetcher {
      * @param {BlockFetcherOptions}
      */
     constructor(options) {
-        var _a;
         super(options);
         this.chain = options.chain;
-        this.maxPerRequest = (_a = options.maxPerRequest) !== null && _a !== void 0 ? _a : 50;
+        this.maxPerRequest = options.maxPerRequest ?? 50;
         this.first = options.first;
         this.count = options.count;
     }

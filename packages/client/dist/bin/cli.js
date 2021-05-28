@@ -163,7 +163,6 @@ function runRpcServer(client, config) {
  * Main entry point to start a client
  */
 async function run() {
-    var _a;
     // give network id precedence over network name
     let chain;
     if (args.networkId) {
@@ -173,7 +172,7 @@ async function run() {
         chain = args.network;
     }
     const common = new common_1.default({ chain, hardfork: 'chainstart' });
-    const datadir = (_a = args.datadir) !== null && _a !== void 0 ? _a : config_1.Config.DATADIR_DEFAULT;
+    const datadir = args.datadir ?? config_1.Config.DATADIR_DEFAULT;
     const configDirectory = `${datadir}/${common.chainName()}/config`;
     fs.ensureDirSync(configDirectory);
     const key = await config_1.Config.getClientKey(datadir, common);
@@ -215,5 +214,5 @@ async function run() {
     });
 }
 // eslint-disable-next-line no-console
-run().catch((err) => { var _a; return (_a = logger === null || logger === void 0 ? void 0 : logger.error(err)) !== null && _a !== void 0 ? _a : console.error(err); });
+run().catch((err) => logger?.error(err) ?? console.error(err));
 //# sourceMappingURL=cli.js.map

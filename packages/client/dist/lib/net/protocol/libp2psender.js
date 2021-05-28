@@ -1,11 +1,4 @@
 "use strict";
-var __asyncValues = (this && this.__asyncValues) || function (o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -41,37 +34,26 @@ class Libp2pSender extends sender_1.Sender {
         // incoming stream
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         it_pipe_1.default(this.stream, async (source) => {
-            var e_1, _a;
-            try {
-                for (var source_1 = __asyncValues(source), source_1_1; source_1_1 = await source_1.next(), !source_1_1.done;) {
-                    const bl = source_1_1.value;
-                    // convert BufferList to Buffer
-                    const data = bl.slice();
-                    try {
-                        const [codeBuf, payload] = ethereumjs_util_1.rlp.decode(data);
-                        const code = ethereumjs_util_1.bufferToInt(codeBuf);
-                        if (code === 0) {
-                            const status = {};
-                            payload.forEach(([k, v]) => {
-                                status[k.toString()] = v;
-                            });
-                            this.status = status;
-                        }
-                        else {
-                            this.emit('message', { code, payload });
-                        }
-                    }
-                    catch (error) {
-                        this.emit('error', error);
-                    }
-                }
-            }
-            catch (e_1_1) { e_1 = { error: e_1_1 }; }
-            finally {
+            for await (const bl of source) {
+                // convert BufferList to Buffer
+                const data = bl.slice();
                 try {
-                    if (source_1_1 && !source_1_1.done && (_a = source_1.return)) await _a.call(source_1);
+                    const [codeBuf, payload] = ethereumjs_util_1.rlp.decode(data);
+                    const code = ethereumjs_util_1.bufferToInt(codeBuf);
+                    if (code === 0) {
+                        const status = {};
+                        payload.forEach(([k, v]) => {
+                            status[k.toString()] = v;
+                        });
+                        this.status = status;
+                    }
+                    else {
+                        this.emit('message', { code, payload });
+                    }
                 }
-                finally { if (e_1) throw e_1.error; }
+                catch (error) {
+                    this.emit('error', error);
+                }
             }
         });
     }

@@ -36,10 +36,9 @@ class Libp2pPeer extends peer_1.Peer {
      * @param {Libp2pPeerOptions}
      */
     constructor(options) {
-        var _a;
-        const multiaddrs = (_a = options.multiaddrs) !== null && _a !== void 0 ? _a : [multiaddr_1.default('/ip4/0.0.0.0/tcp/0')];
+        const multiaddrs = options.multiaddrs ?? [multiaddr_1.default('/ip4/0.0.0.0/tcp/0')];
         const address = multiaddrs.map((ma) => ma.toString().split('/p2p')[0]).join(',');
-        super(Object.assign(Object.assign({}, options), { transport: 'libp2p', address }));
+        super({ ...options, transport: 'libp2p', address });
         this.multiaddrs = multiaddrs;
         this.connected = false;
     }

@@ -113,7 +113,6 @@ class LesProtocol extends protocol_1.Protocol {
      * @return {Object}
      */
     encodeStatus() {
-        var _a, _b;
         let serveOptions = {};
         if (this.flow) {
             serveOptions = {
@@ -129,7 +128,14 @@ class LesProtocol extends protocol_1.Protocol {
                 }),
             };
         }
-        return Object.assign({ networkId: this.chain.networkId.toArrayLike(Buffer), headTd: this.chain.headers.td.toArrayLike(Buffer), headHash: (_a = this.chain.headers.latest) === null || _a === void 0 ? void 0 : _a.hash(), headNum: (_b = this.chain.headers.latest) === null || _b === void 0 ? void 0 : _b.number.toArrayLike(Buffer), genesisHash: this.chain.genesis.hash }, serveOptions);
+        return {
+            networkId: this.chain.networkId.toArrayLike(Buffer),
+            headTd: this.chain.headers.td.toArrayLike(Buffer),
+            headHash: this.chain.headers.latest?.hash(),
+            headNum: this.chain.headers.latest?.number.toArrayLike(Buffer),
+            genesisHash: this.chain.genesis.hash,
+            ...serveOptions,
+        };
     }
     /**
      * Decodes ETH status message payload into a status object
@@ -137,7 +143,6 @@ class LesProtocol extends protocol_1.Protocol {
      * @return {Object}
      */
     decodeStatus(status) {
-        var _a, _b;
         this.isServer = !!status.serveHeaders;
         const mrc = {};
         if (status['flowControl/MRC']) {
@@ -157,8 +162,8 @@ class LesProtocol extends protocol_1.Protocol {
             headNum: new ethereumjs_util_1.BN(status.headNum),
             genesisHash: status.genesisHash,
             serveHeaders: this.isServer,
-            serveChainSince: (_a = status.serveChainSince) !== null && _a !== void 0 ? _a : 0,
-            serveStateSince: (_b = status.serveStateSince) !== null && _b !== void 0 ? _b : 0,
+            serveChainSince: status.serveChainSince ?? 0,
+            serveStateSince: status.serveStateSince ?? 0,
             txRelay: !!status.txRelay,
             bl: status['flowControl/BL'] ? new ethereumjs_util_1.BN(status['flowControl/BL']).toNumber() : undefined,
             mrr: status['flowControl/MRR'] ? new ethereumjs_util_1.BN(status['flowControl/MRR']).toNumber() : undefined,

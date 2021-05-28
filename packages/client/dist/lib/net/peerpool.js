@@ -191,9 +191,8 @@ class PeerPool extends events_1.EventEmitter {
             else {
                 let tablesize = 0;
                 this.config.servers.forEach((server) => {
-                    var _a;
                     if (server instanceof server_1.RlpxServer && server.discovery) {
-                        tablesize = (_a = server.dpt) === null || _a === void 0 ? void 0 : _a.getPeers().length;
+                        tablesize = server.dpt?.getPeers().length;
                         this.config.logger.info(`Looking for suited peers: peertablesize=${tablesize}`);
                     }
                 });

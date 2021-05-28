@@ -23,10 +23,9 @@ class Protocol extends events_1.EventEmitter {
      * @param {ProtocolOptions}
      */
     constructor(options) {
-        var _a;
         super();
         this.config = options.config;
-        this.timeout = (_a = options.timeout) !== null && _a !== void 0 ? _a : 8000;
+        this.timeout = options.timeout ?? 8000;
         this.opened = false;
     }
     /**

@@ -13,14 +13,13 @@ class Server extends events_1.EventEmitter {
      * @param {ServerOptions}
      */
     constructor(options) {
-        var _a, _b;
         super();
         this.bootnodes = [];
         this.config = options.config;
         this.key = options.key ? parse_1.parseKey(options.key) : this.config.key;
         this.bootnodes = options.bootnodes ? parse_1.parseMultiaddrs(options.bootnodes) : [];
-        this.dnsNetworks = (_a = options.dnsNetworks) !== null && _a !== void 0 ? _a : [];
-        this.refreshInterval = (_b = options.refreshInterval) !== null && _b !== void 0 ? _b : 30000;
+        this.dnsNetworks = options.dnsNetworks ?? [];
+        this.refreshInterval = options.refreshInterval ?? 30000;
         this.protocols = new Set();
         this.started = false;
     }

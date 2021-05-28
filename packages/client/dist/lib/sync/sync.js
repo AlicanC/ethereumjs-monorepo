@@ -13,13 +13,12 @@ class Synchronizer extends events_1.EventEmitter {
      * @param {SynchronizerOptions}
      */
     constructor(options) {
-        var _a, _b;
         super();
         this.config = options.config;
         this.pool = options.pool;
         this.chain = options.chain;
-        this.flow = (_a = options.flow) !== null && _a !== void 0 ? _a : new protocol_1.FlowControl();
-        this.interval = (_b = options.interval) !== null && _b !== void 0 ? _b : 1000;
+        this.flow = options.flow ?? new protocol_1.FlowControl();
+        this.interval = options.interval ?? 1000;
         this.running = false;
         this.forceSync = false;
         this.pool.on('added', (peer) => {

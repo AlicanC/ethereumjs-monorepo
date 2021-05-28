@@ -16,11 +16,10 @@ class Eth {
      * @param client Client to which the module binds
      */
     constructor(client) {
-        var _a, _b;
         this.client = client;
         this.service = client.services.find((s) => s.name === 'eth');
         this._chain = this.service.chain;
-        this._vm = (_b = (_a = this.service.synchronizer) === null || _a === void 0 ? void 0 : _a.execution) === null || _b === void 0 ? void 0 : _b.vm;
+        this._vm = this.service.synchronizer?.execution?.vm;
         const ethProtocol = this.service.protocols.find((p) => p.name === 'eth');
         this.ethVersion = Math.max(...ethProtocol.versions);
         this.blockNumber = validation_1.middleware(this.blockNumber.bind(this), 0);
@@ -106,7 +105,7 @@ class Eth {
             const latest = await vm.blockchain.getLatestHeader();
             transaction.gas = latest.gasLimit;
         }
-        const txData = Object.assign(Object.assign({}, transaction), { gasLimit: transaction.gas });
+        const txData = { ...transaction, gasLimit: transaction.gas };
         const tx = tx_1.Transaction.fromTxData(txData, { common: vm._common, freeze: false });
         // set from address
         const from = transaction.from ? ethereumjs_util_1.Address.fromString(transaction.from) : ethereumjs_util_1.Address.zero();
@@ -155,7 +154,7 @@ class Eth {
             const latest = await this._chain.getLatestHeader();
             transaction.gas = latest.gasLimit;
         }
-        const txData = Object.assign(Object.assign({}, transaction), { gasLimit: transaction.gas });
+        const txData = { ...transaction, gasLimit: transaction.gas };
         const tx = tx_1.Transaction.fromTxData(txData, { common: vm._common, freeze: false });
         // set from address
         const from = transaction.from ? ethereumjs_util_1.Address.fromString(transaction.from) : ethereumjs_util_1.Address.zero();
@@ -358,7 +357,6 @@ class Eth {
      * @returns a 32-byte tx hash or the zero hash if the tx is not yet available.
      */
     async sendRawTransaction(params) {
-        var _a, _b;
         const [serializedTx] = params;
         try {
             const common = this.client.config.chainCommon.copy();
@@ -381,10 +379,10 @@ class Eth {
             }
             for (const peer of peers.slice(0, 5)) {
                 if (tx.type === 0) {
-                    (_a = peer.eth) === null || _a === void 0 ? void 0 : _a.send('Transactions', [tx.raw()]);
+                    peer.eth?.send('Transactions', [tx.raw()]);
                 }
                 else {
-                    (_b = peer.eth) === null || _b === void 0 ? void 0 : _b.send('Transactions', [tx.serialize()]);
+                    peer.eth?.send('Transactions', [tx.serialize()]);
                 }
             }
             return `0x${tx.hash().toString('hex')}`;

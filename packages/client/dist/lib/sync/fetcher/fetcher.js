@@ -18,15 +18,14 @@ class Fetcher extends stream_1.Readable {
      * @param {FetcherOptions}
      */
     constructor(options) {
-        var _a, _b, _c, _d, _e;
-        super(Object.assign(Object.assign({}, options), { objectMode: true }));
+        super({ ...options, objectMode: true });
         this.config = options.config;
         this.pool = options.pool;
-        this.timeout = (_a = options.timeout) !== null && _a !== void 0 ? _a : 8000;
-        this.interval = (_b = options.interval) !== null && _b !== void 0 ? _b : 1000;
-        this.banTime = (_c = options.banTime) !== null && _c !== void 0 ? _c : 60000;
-        this.maxQueue = (_d = options.maxQueue) !== null && _d !== void 0 ? _d : 16;
-        this.maxPerRequest = (_e = options.maxPerRequest) !== null && _e !== void 0 ? _e : 50;
+        this.timeout = options.timeout ?? 8000;
+        this.interval = options.interval ?? 1000;
+        this.banTime = options.banTime ?? 60000;
+        this.maxQueue = options.maxQueue ?? 16;
+        this.maxPerRequest = options.maxPerRequest ?? 50;
         this.in = new Heap({
             comparBefore: (a, b) => a.index < b.index,
         });
@@ -52,7 +51,11 @@ class Fetcher extends stream_1.Readable {
      */
     enqueue(job) {
         if (this.running) {
-            this.in.insert(Object.assign(Object.assign({}, job), { time: Date.now(), state: 'idle' }));
+            this.in.insert({
+                ...job,
+                time: Date.now(),
+                state: 'idle',
+            });
         }
     }
     /**

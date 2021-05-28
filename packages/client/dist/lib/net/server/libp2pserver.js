@@ -23,11 +23,10 @@ class Libp2pServer extends server_1.Server {
      * @param {Libp2pServerOptions}
      */
     constructor(options) {
-        var _a;
         super(options);
         this.peers = new Map();
         this.banned = new Map();
-        this.multiaddrs = (_a = options.multiaddrs) !== null && _a !== void 0 ? _a : [multiaddr_1.default('/ip4/127.0.0.1/tcp/50580/ws')];
+        this.multiaddrs = options.multiaddrs ?? [multiaddr_1.default('/ip4/127.0.0.1/tcp/50580/ws')];
         this.node = null;
         this.banned = new Map();
     }

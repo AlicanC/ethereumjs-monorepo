@@ -20,9 +20,8 @@ const LibP2pKadDht = require('libp2p-kad-dht');
 const mplex = require('libp2p-mplex');
 class Libp2pNode extends libp2p_1.default {
     constructor(options) {
-        var _a;
         const wsTransportKey = LibP2pWebsockets.prototype[Symbol.toStringTag];
-        options.bootnodes = (_a = options.bootnodes) !== null && _a !== void 0 ? _a : [];
+        options.bootnodes = options.bootnodes ?? [];
         super({
             peerId: options.peerId,
             addresses: options.addresses,

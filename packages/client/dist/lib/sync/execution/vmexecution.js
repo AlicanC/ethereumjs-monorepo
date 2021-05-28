@@ -179,12 +179,11 @@ class VMExecution extends execution_1.Execution {
      * @returns {Promise}
      */
     async stop() {
-        var _a;
         if (this.vmPromise) {
             // ensure that we wait that the VM finishes executing the block (and flushing the trie cache)
             await this.vmPromise;
         }
-        await ((_a = this.stateDB) === null || _a === void 0 ? void 0 : _a.close());
+        await this.stateDB?.close();
         await super.stop();
         return true;
     }

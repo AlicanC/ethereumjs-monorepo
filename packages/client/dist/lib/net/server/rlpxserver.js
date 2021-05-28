@@ -39,7 +39,6 @@ class RlpxServer extends server_1.Server {
      * @param {RlpxServerOptions}
      */
     constructor(options) {
-        var _a;
         super(options);
         this.peers = new Map();
         this.rlpx = null;
@@ -48,7 +47,7 @@ class RlpxServer extends server_1.Server {
         // TODO: get the external ip from the upnp service
         this.ip = '::';
         this.discovery = options.config.discV4 || options.config.discDns;
-        this.clientFilter = (_a = options.clientFilter) !== null && _a !== void 0 ? _a : [
+        this.clientFilter = options.clientFilter ?? [
             'go1.5',
             'go1.6',
             'go1.7',
@@ -108,7 +107,6 @@ class RlpxServer extends server_1.Server {
      * Bootstrap bootnode and DNS mapped peers from the network
      */
     async bootstrap() {
-        var _a, _b;
         const self = this;
         // Bootnodes
         let promises = this.bootnodes.map((ma) => {
@@ -122,7 +120,7 @@ class RlpxServer extends server_1.Server {
         });
         // DNS peers
         if (this.config.discDns) {
-            const dnsPeers = (_b = (await ((_a = this.dpt) === null || _a === void 0 ? void 0 : _a.getDnsPeers()))) !== null && _b !== void 0 ? _b : [];
+            const dnsPeers = (await this.dpt?.getDnsPeers()) ?? [];
             promises = promises.concat(dnsPeers.map((node) => self.dpt.bootstrap(node)));
         }
         for (const promise of promises) {

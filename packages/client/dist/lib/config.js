@@ -12,27 +12,26 @@ const util_1 = require("./util");
 const level = require('level');
 class Config {
     constructor(options = {}) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q;
         this.servers = [];
-        this.syncmode = (_a = options.syncmode) !== null && _a !== void 0 ? _a : Config.SYNCMODE_DEFAULT;
+        this.syncmode = options.syncmode ?? Config.SYNCMODE_DEFAULT;
         this.vm = options.vm;
-        this.lightserv = (_b = options.lightserv) !== null && _b !== void 0 ? _b : Config.LIGHTSERV_DEFAULT;
-        this.transports = (_c = options.transports) !== null && _c !== void 0 ? _c : Config.TRANSPORTS_DEFAULT;
+        this.lightserv = options.lightserv ?? Config.LIGHTSERV_DEFAULT;
+        this.transports = options.transports ?? Config.TRANSPORTS_DEFAULT;
         this.bootnodes = options.bootnodes;
-        this.port = (_d = options.port) !== null && _d !== void 0 ? _d : Config.PORT_DEFAULT;
+        this.port = options.port ?? Config.PORT_DEFAULT;
         this.multiaddrs = options.multiaddrs;
-        this.datadir = (_e = options.datadir) !== null && _e !== void 0 ? _e : Config.DATADIR_DEFAULT;
-        this.key = (_f = options.key) !== null && _f !== void 0 ? _f : devp2p_1.genPrivateKey();
-        this.rpc = (_g = options.rpc) !== null && _g !== void 0 ? _g : Config.RPC_DEFAULT;
-        this.rpcport = (_h = options.rpcport) !== null && _h !== void 0 ? _h : Config.RPCPORT_DEFAULT;
-        this.rpcaddr = (_j = options.rpcaddr) !== null && _j !== void 0 ? _j : Config.RPCADDR_DEFAULT;
-        this.loglevel = (_k = options.loglevel) !== null && _k !== void 0 ? _k : Config.LOGLEVEL_DEFAULT;
-        this.minPeers = (_l = options.minPeers) !== null && _l !== void 0 ? _l : Config.MINPEERS_DEFAULT;
-        this.maxPeers = (_m = options.maxPeers) !== null && _m !== void 0 ? _m : Config.MAXPEERS_DEFAULT;
-        this.dnsAddr = (_o = options.dnsAddr) !== null && _o !== void 0 ? _o : Config.DNSADDR_DEFAULT;
-        this.debugCode = (_p = options.debugCode) !== null && _p !== void 0 ? _p : Config.DEBUGCODE_DEFAULT;
+        this.datadir = options.datadir ?? Config.DATADIR_DEFAULT;
+        this.key = options.key ?? devp2p_1.genPrivateKey();
+        this.rpc = options.rpc ?? Config.RPC_DEFAULT;
+        this.rpcport = options.rpcport ?? Config.RPCPORT_DEFAULT;
+        this.rpcaddr = options.rpcaddr ?? Config.RPCADDR_DEFAULT;
+        this.loglevel = options.loglevel ?? Config.LOGLEVEL_DEFAULT;
+        this.minPeers = options.minPeers ?? Config.MINPEERS_DEFAULT;
+        this.maxPeers = options.maxPeers ?? Config.MAXPEERS_DEFAULT;
+        this.dnsAddr = options.dnsAddr ?? Config.DNSADDR_DEFAULT;
+        this.debugCode = options.debugCode ?? Config.DEBUGCODE_DEFAULT;
         // TODO: map chainParams (and lib/util.parseParams) to new Common format
-        const common = (_q = options.common) !== null && _q !== void 0 ? _q : new common_1.default({ chain: Config.CHAIN_DEFAULT, hardfork: 'chainstart' });
+        const common = options.common ?? new common_1.default({ chain: Config.CHAIN_DEFAULT, hardfork: 'chainstart' });
         this.chainCommon = common.copy();
         this.execCommon = common.copy();
         this.discDns = this.getDnsDiscovery(options.discDns);
@@ -57,10 +56,9 @@ class Config {
         else {
             // Otherwise parse transports from transports option
             this.servers = util_1.parseTransports(this.transports).map((t) => {
-                var _a, _b;
                 if (t.name === 'rlpx') {
-                    const bootnodes = (_a = this.bootnodes) !== null && _a !== void 0 ? _a : this.chainCommon.bootstrapNodes();
-                    const dnsNetworks = (_b = options.dnsNetworks) !== null && _b !== void 0 ? _b : this.chainCommon.dnsNetworks();
+                    const bootnodes = this.bootnodes ?? this.chainCommon.bootstrapNodes();
+                    const dnsNetworks = options.dnsNetworks ?? this.chainCommon.dnsNetworks();
                     return new server_1.RlpxServer({ config: this, bootnodes, dnsNetworks });
                 }
                 else if (t.name === 'libp2p') {

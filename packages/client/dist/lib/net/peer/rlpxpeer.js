@@ -39,7 +39,11 @@ class RlpxPeer extends peer_1.Peer {
      */
     constructor(options) {
         const address = `${options.host}:${options.port}`;
-        super(Object.assign(Object.assign({}, options), { transport: 'rlpx', address }));
+        super({
+            ...options,
+            transport: 'rlpx',
+            address,
+        });
         this.host = options.host;
         this.port = options.port;
         this.rlpx = null;

@@ -15,9 +15,8 @@ class FullEthereumService extends ethereumservice_1.EthereumService {
      * @param {FullEthereumServiceOptions}
      */
     constructor(options) {
-        var _a;
         super(options);
-        this.lightserv = (_a = options.lightserv) !== null && _a !== void 0 ? _a : false;
+        this.lightserv = options.lightserv ?? false;
         this.config.logger.info('Full sync mode');
         this.synchronizer = new fullsync_1.FullSynchronizer({
             config: this.config,
