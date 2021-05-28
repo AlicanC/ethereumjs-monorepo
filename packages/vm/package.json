@@ -8,6 +8,9 @@
     "ethereum",
     "VM"
   ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "files": [
     "dist",
     "dist.browser"
